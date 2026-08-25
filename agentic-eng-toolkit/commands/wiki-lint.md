@@ -1,10 +1,10 @@
 ---
-description: 세컨드 브레인 위키의 건강 상태를 점검한다 (모순·오래된 주장·고아 페이지·깨진 링크·index 동기화·방치 stub)
+description: Checks the health of the second-brain wiki (contradictions · stale claims · orphan pages · broken links · index sync · abandoned stubs)
 ---
 
-Skill 도구로 이 플러그인에 번들된 **wiki-lint** 스킬을 실행하세요.
-먼저 `WIKI_SCHEMA.md` 로 규칙을 확인하고 `wiki/` 전체를 수집한 뒤, 7개 점검 항목을 검사합니다. 발견 내용을 항목별 목록으로 **먼저 보고**하고, 사용자 승인 후에만 수정합니다. 결과는 `wiki/log.md` 에 `[LINT]` 한 줄로 기록합니다.
+Run the **wiki-lint** skill bundled with this plugin via the Skill tool.
+First check the rules in `WIKI_SCHEMA.md`, then collect all of `wiki/`, and inspect the 7 check items. **Report findings first**, as a per-item list, and only make fixes after user approval. Record the results as a single `[LINT]` line in `wiki/log.md`.
 
-추가 지시(특정 폴더만 점검 등): $ARGUMENTS
+Additional instructions (e.g. check only a specific folder): $ARGUMENTS
 
-깨끗하면 "이상 없음"으로 끝냅니다 (멱등성). raw/ 는 건드리지 않습니다.
+If everything is clean, finish with "no issues found" (idempotent). Do not touch raw/.

@@ -1,36 +1,36 @@
 ---
 name: wiki-ingest
-description: raw 소스를 읽어 에이전틱 엔지니어링 세컨드 브레인 위키에 통합한다. 엔티티를 추출해 기존 페이지는 병합 갱신하고 없으면 새로 만들며, 교차 링크와 모순 표시, index/log 갱신까지 한 번에 처리한다. "ingest", "위키에 넣어", "위키에 정리해", "새 소스 추가", "raw 통합", "세컨드 브레인 업데이트", "ep0X 정리해줘" 같은 요청에 트리거. 위키에 지식을 누적하려 할 때 사용.
+description: Reads a raw source and integrates it into the agentic engineering second-brain wiki. Extracts entities, merge-updating existing pages or creating new ones, and handles cross-linking, contradiction marking, and index/log updates in one pass. Triggers on requests like "ingest", "put this in the wiki", "organize this into the wiki", "add a new source", "integrate raw", "update the second brain", "ingest ep0X". Use when accumulating knowledge into the wiki.
 ---
 
-# wiki-ingest — 소스를 위키에 통합
+# wiki-ingest — Integrate a source into the wiki
 
-## 0. 먼저 할 일
-1. 레포 루트의 `WIKI_SCHEMA.md`를 **반드시 먼저 읽는다.** 모든 규칙(폴더 구조·프론트매터·명명·인용·언어=한국어)은 거기서 온다.
-2. `wiki/index.md`와 (있으면) 관련 기존 페이지를 읽어 **현재 위키 상태를 파악**한다. 중복 생성을 막는 핵심 단계.
+## 0. Do this first
+1. **Always read `WIKI_SCHEMA.md` at the repo root first.** All rules (folder structure · frontmatter · naming · citations · language=English) come from there.
+2. Read `wiki/index.md` and any relevant existing pages to **understand the current state of the wiki**. This is the key step to avoid creating duplicates.
 
-## 1. 대상 결정
-- 사용자가 특정 소스(예: "ep02")를 지정하면 그것만. 미지정이면 아직 ingest 안 된 raw 또는 전체를 물어보고 진행.
-- 대상 raw 파일을 정독한다.
+## 1. Determine the target
+- If the user specifies a source (e.g. "ep02"), use only that. If unspecified, ask which raw sources haven't been ingested yet, or proceed with all of them.
+- Read the target raw file carefully.
 
-## 2. 엔티티 추출
-- 소스에서 개념/인물/도구를 식별한다. `WIKI_SCHEMA.md` §10의 시드 맵을 참고하되 거기 없는 것도 추가.
-- 각 엔티티가 **이미 페이지로 존재하는지** index에서 확인.
+## 2. Extract entities
+- Identify concepts/people/tools from the source. Reference the seed map in `WIKI_SCHEMA.md` §10, but also add anything not listed there.
+- Check the index for whether each entity **already exists as a page**.
 
-## 3. 페이지 작성 (병합 우선)
-- **존재하면:** 기존 내용과 일관되게 **병합**한다. 덮어쓰지 말고, 새 소스의 관점을 `## 출처별 관점`에 추가하고 `sources` 프론트매터에 ep 번호 추가, `updated` 갱신, `status`를 적절히 올린다(stub→draft→solid).
-- **없으면:** 타입별 폴더(`concepts/`·`people/`·`tools/`)에 `WIKI_SCHEMA.md` §4 템플릿으로 신규 생성.
-- 대본을 복붙하지 말고 **핵심만 압축**(한국어).
+## 3. Write pages (merge-first)
+- **If it exists:** **merge** consistently with existing content. Don't overwrite — add the new source's perspective under `## Perspective by Source`, add the ep number to the `sources` frontmatter, update `updated`, and bump `status` appropriately (stub→draft→solid).
+- **If it doesn't exist:** create it fresh in the type-specific folder (`concepts/`·`people/`·`tools/`) using the `WIKI_SCHEMA.md` §4 template.
+- Don't paste the transcript verbatim — **condense to the essentials** (in English).
 
-## 4. 연결과 모순
-- 본문에서 언급되는 다른 엔티티를 `[[ ]]`로 링크. 아직 페이지 없으면 stub로 만들거나 링크만 남긴다.
-- 모든 주장에 가능한 한 `[[ep0X-...]]` 출처를 붙인다.
-- 소스 간 충돌(예: "5가지 기둥"의 출처·구성이 ep01 John Kim vs ep02 Karpathy로 다름)은 지우지 말고 해당 페이지 `## 모순/주의`에 명시.
+## 4. Links and contradictions
+- Link other entities mentioned in the body with `[[ ]]`. If a page doesn't exist yet, create a stub or leave just the link.
+- Attach a `[[ep0X-...]]` source citation to every claim wherever possible.
+- If sources conflict (e.g. the "5 pillars" differ in origin/composition between ep01 John Kim vs ep02 Karpathy), don't delete either — note it explicitly in that page's `## Contradictions / Caveats`.
 
-## 5. 마무리 (반드시)
-- `wiki/index.md`에 신규 페이지를 카테고리별로 한 줄 요약과 함께 추가하고 `updated` 갱신.
-- `wiki/log.md` 맨 위에 `[INGEST]` 한 줄 기록: 대상 소스, 신규/갱신 페이지 수, 표시한 모순.
-- 사용자에게 요약 보고: 무엇을 만들고/갱신했고, 어떤 모순을 발견했는지.
+## 5. Wrap-up (mandatory)
+- Add new pages to `wiki/index.md` under the right category with a one-line summary, and update `updated`.
+- Log a single `[INGEST]` line at the top of `wiki/log.md`: source, number of new/updated pages, contradictions flagged.
+- Report a summary to the user: what was created/updated, and what contradictions were found.
 
-## 원칙
-- 단순함 우선. 추측은 "(추론)"으로 표시. raw/는 절대 수정하지 않는다.
+## Principles
+- Simplicity first. Mark speculation as "(inferred)". Never modify raw/.

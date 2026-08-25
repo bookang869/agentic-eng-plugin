@@ -1,6 +1,6 @@
 # AI-Ready Codebase Rubric · v2 (100 pt · 7 categories)
 
-이 문서는 자동/수동 채점 모두에 쓰는 단일 진실 기준입니다. `scripts/score.py` 가 자동으로 잡지 못하는 항목은 사람이 보강합니다 — 각 항목 끝의 **Auto / Heuristic / Manual** 태그가 신뢰도를 알려줍니다.
+This document is the single source of truth used for both automatic and manual scoring. Items `scripts/score.py` cannot catch automatically are supplemented by a human — the **Auto / Heuristic / Manual** tag at the end of each item indicates confidence.
 
 | Cat | Name | Points |
 |-----|------|--------|
@@ -18,157 +18,157 @@
 
 ## A. AI Navigation & Coverage · /15
 
-> AI가 전체 codebase / module / workflow를 빠르게 찾을 수 있는가.
+> Can an AI quickly find its way around the full codebase / modules / workflows?
 
 | Score | Criteria |
 |-------|----------|
-| 0     | repo를 grep / search로 추측해야 함 |
-| 5     | 일부 module에 README / context 존재 |
-| 10    | 대부분 핵심 module에 역할·entry point·related files 정리 |
-| 15    | 모든 핵심 module / workflow에 navigation guide 존재. "어디를 봐야 하는가"를 1-2 hops 안에 도달 |
+| 0     | Has to guess at the repo via grep / search |
+| 5     | Some modules have a README / context |
+| 10    | Most core modules document role · entry point · related files |
+| 15    | Every core module / workflow has a navigation guide. "Where should I look" is reachable within 1-2 hops |
 
 **Measurement** *(Auto)*
 
 ```
-Navigation Coverage = (AI-context로 안내 가능한 핵심 module 수) / (전체 핵심 module 수)
+Navigation Coverage = (# of core modules an AI can be guided to via context) / (total # of core modules)
 ```
 
-- "핵심 module" = repo 루트의 코드 디렉터리 + `apps/*` / `packages/*` / `services/*` 의 각 자식
-- 점수 = `round(coverage × 15)` 후 cap
-- 파일 개수가 아니라 module / workflow coverage로 평가
+- "Core module" = code directories at the repo root + each child of `apps/*` / `packages/*` / `services/*`
+- Score = `round(coverage × 15)`, then cap
+- Evaluated by module / workflow coverage, not file count
 
 ---
 
 ## B. Context Document Quality · /20
 
-> Context files가 "compass, not encyclopedia" 원칙을 따르는가.
+> Do context files follow the "compass, not encyclopedia" principle?
 
 | Sub | Item | Points | Full-Score Criteria |
 |-----|------|--------|---------------------|
-| B1 | Conciseness *(Auto)*       | 4 | 모든 CLAUDE.md가 25-35 lines 또는 ~1,000 tokens 이하 |
-| B2 | Quick Commands *(Heuristic)* | 4 | copy-paste 가능한 명령어 + 사용 시점 명시 (`~~~bash` 블록 + 주변 설명) |
-| B3 | Key Files *(Heuristic)*    | 4 | 실제 수정에 필요한 3-5개 핵심 파일 경로 제시 |
-| B4 | Non-Obvious Patterns *(Heuristic)* | 4 | 실패 유발 hidden rule + 예외가 명시 (`Why:`, `Note:`, `Gotcha`, `Warning`) |
-| B5 | See Also / Cross References *(Auto)* | 4 | 관련 module / context file / dependency map 연결 (relative links) |
+| B1 | Conciseness *(Auto)*       | 4 | Every CLAUDE.md is 25-35 lines or ~1,000 tokens or less |
+| B2 | Quick Commands *(Heuristic)* | 4 | Copy-pasteable commands + when to use them stated (`~~~bash` block + surrounding explanation) |
+| B3 | Key Files *(Heuristic)*    | 4 | Lists the 3-5 core file paths actually needed for edits |
+| B4 | Non-Obvious Patterns *(Heuristic)* | 4 | Hidden rules that cause failures + exceptions are stated (`Why:`, `Note:`, `Gotcha`, `Warning`) |
+| B5 | See Also / Cross References *(Auto)* | 4 | Links to related modules / context files / dependency maps (relative links) |
 
-각 sub-item 은 module 평균 또는 최댓값을 4점 만점으로 환산. **문서가 많은 게 아니라 task-relevant context만 담는 것이 핵심.**
+Each sub-item is converted to a 4-point score based on the module average or maximum. **The point isn't having lots of docs — it's containing only task-relevant context.**
 
 ---
 
 ## C. Tribal Knowledge Externalization · /20
 
-> 숨은 규칙, 실패 패턴, human-only knowledge가 구조화되었는가.
+> Are hidden rules, failure patterns, and human-only knowledge structured?
 
 ### Five-Question Framework *(Heuristic + Manual)*
 
-각 핵심 module에 대해 다음 5개 질문에 답할 수 있으면 4점씩, 총 20점:
+For each core module, 4 points per question answerable, 20 points total:
 
-1. **What does this module configure / own?** — `## Purpose`, "configures", "owns" 표현
+1. **What does this module configure / own?** — `## Purpose`, "configures", "owns" phrasing
 2. **What are common modification patterns?** — `## Patterns`, "common changes", "## How to"
 3. **What non-obvious patterns cause failures?** — `Why:`, `Note:`, `Gotcha`, `Don't`
 4. **What are the cross-module dependencies?** — "depends on", "imports", `## Cross-module`
-5. **What tribal knowledge is hidden in comments / history / human memory?** — `MEMORY.md` / `ADR` / `docs/decisions` 존재
+5. **What tribal knowledge is hidden in comments / history / human memory?** — presence of `MEMORY.md` / `ADR` / `docs/decisions`
 
 ### Score band
 
 | Score | Criteria |
 |-------|----------|
-| 0     | senior engineer / Slack / 과거 PR에만 지식 존재 |
-| 5     | 일부 gotcha가 README / comment에 흩어짐 |
-| 10    | 반복 작업의 암묵지 일부 문서화 |
-| 15    | compatibility rule / naming / generated code rule / deprecated-but-required rule 정리 |
-| 20    | 식별된 tribal knowledge 대부분이 context file / checklist / playbook에 반영 + AI가 질의로 회수 가능 |
+| 0     | Knowledge exists only with the senior engineer / in Slack / in old PRs |
+| 5     | Some gotchas scattered across README / comments |
+| 10    | Some tacit knowledge of repeated tasks documented |
+| 15    | Compatibility rules / naming / generated-code rules / deprecated-but-required rules organized |
+| 20    | Most identified tribal knowledge is reflected in context files / checklists / playbooks + retrievable by AI query |
 
-자동 점수 = (5질문 통과 평균 × 20). 실제 깊이는 사람이 검증.
+Auto score = (average pass rate across 5 questions × 20). Actual depth verified by a human.
 
 ---
 
 ## D. Cross-Module Dependency & Data Flow Mapping · /15
 
-> 변경 영향 범위를 AI가 추적할 수 있는가.
+> Can an AI trace the blast radius of a change?
 
 | Score | Criteria |
 |-------|----------|
-| 0     | 변경 영향을 사람이 수동으로 추적 |
-| 5     | 일부 architecture diagram 또는 dependency note |
-| 10    | 주요 module 간 dependency / ownership 문서화 |
-| 15    | "What depends on X?" 에 graph / index / map으로 답 가능. repo / service / test / data flow ripple 추적 가능 |
+| 0     | Change impact tracked manually by a human |
+| 5     | Some architecture diagram or dependency note |
+| 10    | Dependencies / ownership between major modules documented |
+| 15    | "What depends on X?" answerable via a graph / index / map. Can trace repo / service / test / data-flow ripple |
 
 **Auto checks:**
-- `docs/architecture.md`, `ARCHITECTURE.md`, `docs/dependency-graph*` 존재
-- `mermaid` / `graphviz` 다이어그램 fence 존재
-- CLAUDE.md 안에 `## Dependencies` / `Cross-module` 섹션
-- monorepo 의 `pnpm-workspace.yaml` / `turbo.json` / `nx.json` 으로 graph 도출 가능 여부
+- Presence of `docs/architecture.md`, `ARCHITECTURE.md`, `docs/dependency-graph*`
+- Presence of `mermaid` / `graphviz` diagram fences
+- `## Dependencies` / `Cross-module` sections inside CLAUDE.md
+- Whether a graph is derivable from a monorepo's `pnpm-workspace.yaml` / `turbo.json` / `nx.json`
 
-**Why important.** 한 field change가 6개 subsystem에 ripple 되는 대규모 codebase에서 결정적. 이게 약하면 D를 깎는 것이 옳음.
+**Why important.** Decisive in large codebases where a single field change ripples across 6 subsystems. If this is weak, it's correct to dock D.
 
 ---
 
 ## E. Verification & Quality Gates · /15
 
-> AI-generated context와 code change를 검증하는 체계가 있는가.
+> Is there a system to verify AI-generated context and code changes?
 
 | Sub | Item | Points | Full-Score Criteria |
 |-----|------|--------|---------------------|
-| E1 | Reference Accuracy *(Auto)*        | 5 | CLAUDE.md / context file이 언급한 file path · API · command 의 hallucination 0건 |
-| E2 | Independent Critic Review *(Manual)* | 4 | 최소 2-3 round 독립 review 또는 checklist (CODEOWNERS / review template / agent critic) |
-| E3 | Task Validation *(Auto)*           | 4 | 변경 유형별 build / test / lint / typecheck / e2e 검증 명령 제공 + 실제 실행 가능 |
-| E4 | Prompt / Workflow Tests *(Heuristic)* | 2 | 대표 AI task query를 실제 테스트 (`evals/`, agent test) |
+| E1 | Reference Accuracy *(Auto)*        | 5 | Zero hallucinations among file paths · APIs · commands referenced in CLAUDE.md / context files |
+| E2 | Independent Critic Review *(Manual)* | 4 | At least 2-3 rounds of independent review or a checklist (CODEOWNERS / review template / agent critic) |
+| E3 | Task Validation *(Auto)*           | 4 | Build / test / lint / typecheck / e2e verification commands provided per change type + actually runnable |
+| E4 | Prompt / Workflow Tests *(Heuristic)* | 2 | Representative AI task queries actually tested (`evals/`, agent tests) |
 
-**E1 자동 채점 알고리즘:**
-1. 모든 context file에서 `[A-Za-z0-9_./-]+\.(py|ts|tsx|js|md|sql|json|yaml|yml|toml)` 후보를 추출
-2. 각 후보를 repo 루트 기준으로 존재 검증
-3. `valid / total` 비율 → `round(ratio × 5)`
+**E1 auto-scoring algorithm:**
+1. Extract `[A-Za-z0-9_./-]+\.(py|ts|tsx|js|md|sql|json|yaml|yml|toml)` candidates from every context file
+2. Verify each candidate's existence relative to the repo root
+3. `valid / total` ratio → `round(ratio × 5)`
 
-> Meta 표현으로 "zero hallucinated paths"가 5점의 조건. 이것이 AI-ready의 핵심 — 검증되지 않은 context는 없는 것보다 **위험하다**.
+> "Zero hallucinated paths" is Meta's stated condition for full marks here. This is the core of AI-readiness — unverified context is **more dangerous** than none at all.
 
 ---
 
 ## F. Freshness & Self-Maintenance · /10
 
-> Context가 stale 해지지 않도록 자동 유지되는가.
+> Is context automatically kept from going stale?
 
 | Score | Criteria |
 |-------|----------|
-| 0     | 수동 관리 + stale 여부 불명 |
-| 3     | owner 있음 + 가끔 update |
-| 6     | CI / script로 broken path / reference 일부 검출 |
-| 10    | 주기적 file path validation, coverage gap detection, critic review, stale reference repair 자동 실행 |
+| 0     | Manually maintained + staleness unknown |
+| 3     | Has an owner + updated occasionally |
+| 6     | CI / script catches some broken paths / references |
+| 10    | Periodic file-path validation, coverage-gap detection, critic review, and stale-reference repair run automatically |
 
 **Auto checks:**
-- 각 CLAUDE.md mtime vs 같은 module 내부 코드 파일 latest mtime 비교 — drift 비율
-- `.github/workflows/*` 에 context / docs validation step 존재
-- pre-commit / husky 에 path validation hook 존재
-- `MEMORY.md` Session Notes 의 가장 최근 entry 날짜
+- Compare each CLAUDE.md's mtime against the latest mtime of code files in the same module — drift ratio
+- Presence of a context / docs validation step in `.github/workflows/*`
+- Presence of a path-validation hook in pre-commit / husky
+- Date of the most recent entry in `MEMORY.md` Session Notes
 
-**왜 강조되는가.** Stale context는 hallucination을 augmented retrieval로 정당화한다. 없는 것보다 **나쁘다**.
+**Why it matters.** Stale context justifies hallucination via augmented retrieval. **Worse** than having none.
 
 ---
 
 ## G. Agent Performance Outcomes · /5
 
-> 실제 AI task 성공률 / 효율 개선이 측정되는가.
+> Is actual AI task success rate / efficiency improvement measured?
 
 | Score | Criteria |
 |-------|----------|
-| 0     | AI 성능 측정 없음 |
-| 2     | 정성적으로 "도움 된다" 수준 |
-| 3     | 대표 task success rate 또는 human intervention rate 측정 |
-| 5     | tool calls, token usage, task completion time, correctness, prompt pass rate를 before / after로 측정 |
+| 0     | No AI performance measurement |
+| 2     | Qualitative "it helps" level only |
+| 3     | Representative task success rate or human intervention rate measured |
+| 5     | Tool calls, token usage, task completion time, correctness, prompt pass rate measured before / after |
 
-**Tracked metrics (예시):**
+**Tracked metrics (examples):**
 - AI task pass rate
-- 평균 tool calls per task
-- 평균 tokens per task
-- human clarification count
-- failed PR / rework rate
-- hallucinated file path count
-- time-to-first-correct-change
+- Average tool calls per task
+- Average tokens per task
+- Human clarification count
+- Failed PR / rework rate
+- Hallucinated file path count
+- Time-to-first-correct-change
 
 **Auto checks:**
-- `evals/`, `benchmarks/`, `agent-metrics/` 디렉터리 존재
-- `.skill-eval.json`, `agent-results.json` 같은 결과 파일
-- AI usage telemetry 설정 (Claude Code session log, OpenTelemetry)
+- Presence of `evals/`, `benchmarks/`, `agent-metrics/` directories
+- Result files like `.skill-eval.json`, `agent-results.json`
+- AI usage telemetry configured (Claude Code session log, OpenTelemetry)
 
 ---
 
@@ -176,17 +176,17 @@ Navigation Coverage = (AI-context로 안내 가능한 핵심 module 수) / (전�
 
 | Score | Level | Meaning | Badge color |
 |-------|-------|---------|-------------|
-| 90-100 | **AI-Native / Agentic-Ready** | Agent가 대부분 반복 작업을 자율 수행 + context layer self-maintaining | green |
-| 75-89  | **AI-Ready** | 대부분 작업에서 AI가 안정적으로 navigation, edit, verify | green |
-| 60-74  | **AI-Assisted** | AI 유용하지만 complex / domain task에는 human context 필요 | amber |
-| 40-59  | **AI-Fragile** | 단순 task는 가능, hidden rule / dependency로 오류 위험 높음 | amber |
-| < 40   | **AI-Hostile** | tribal knowledge 의존도 높음 + AI는 추측 기반 | red |
+| 90-100 | **AI-Native / Agentic-Ready** | Agent autonomously handles most repetitive tasks + context layer is self-maintaining | green |
+| 75-89  | **AI-Ready** | AI reliably navigates, edits, and verifies for most tasks | green |
+| 60-74  | **AI-Assisted** | AI is useful, but complex / domain tasks need human context | amber |
+| 40-59  | **AI-Fragile** | Simple tasks are fine, high error risk from hidden rules / dependencies | amber |
+| < 40   | **AI-Hostile** | Heavy reliance on tribal knowledge + AI is mostly guessing | red |
 
 ---
 
 ## ROI Heuristics for Recommendations
 
-각 갭에 대해 다음 형식으로 액션을 제시:
+Present actions for each gap in this format:
 
 ```
 Effort: S (<1h) / M (1-4h) / L (4h+)
@@ -194,16 +194,16 @@ Impact: time saved per AI task × estimated tasks/period
 Priority = Impact / Effort
 ```
 
-대표 액션 ROI 표:
+Sample action ROI table:
 
 | Action | Effort | Impact (typical) |
 |--------|--------|------------------|
-| 핵심 module에 CLAUDE.md 추가 | S (30-60 min) | task당 2-5 min × 주 N task |
-| god file (>500 lines) 분할 | M (1-3 hr/file) | 토큰 30-50% 절감 + 정확도 ↑ |
-| `## Cross-module deps` 섹션 추가 | S (30 min) | cascade bug 방지 |
-| MEMORY.md / ADR 도입 | M (2-4 hr 초기) | tribal knowledge 보존 (외부화) |
-| path validation CI 추가 | S (1 hr) | stale reference 자동 차단 |
-| agent eval test 추가 | L (4-8 hr) | AI 회귀 catch |
-| naming refactor | M-L | 일관성 향상 (낮은 우선순위) |
+| Add CLAUDE.md to a core module | S (30-60 min) | 2-5 min/task × N tasks/week |
+| Split a god file (>500 lines) | M (1-3 hr/file) | 30-50% token reduction + accuracy ↑ |
+| Add a `## Cross-module deps` section | S (30 min) | Prevents cascade bugs |
+| Introduce MEMORY.md / ADR | M (2-4 hr initial) | Preserves tribal knowledge (externalized) |
+| Add path-validation CI | S (1 hr) | Auto-blocks stale references |
+| Add agent eval tests | L (4-8 hr) | Catches AI regressions |
+| Naming refactor | M-L | Improves consistency (low priority) |
 
-상위 5개를 Priority 내림차순으로 정렬해 제시.
+Present the top 5, sorted by Priority descending.

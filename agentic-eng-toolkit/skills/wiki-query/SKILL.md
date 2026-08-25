@@ -1,27 +1,27 @@
 ---
 name: wiki-query
-description: 에이전틱 엔지니어링 세컨드 브레인 위키에서 질문에 답한다. index와 관련 페이지를 검색해 인용을 붙여 종합 답변하고, 가치 있는 답변은 위키에 다시 반영할지 제안한다. "위키에서 찾아", "위키에 물어봐", "...에 대해 정리해줘", "wiki query", "세컨드 브레인에서 ...", "...가 뭐였지" 처럼 축적된 지식에 질문할 때 트리거.
+description: Answers a question from the agentic engineering second-brain wiki. Searches the index and related pages, synthesizes a cited answer, and suggests feeding valuable answers back into the wiki. Triggers on requests like "find it in the wiki", "ask the wiki", "summarize what we know about...", "wiki query", "from the second brain...", "what was..." — any question against accumulated knowledge.
 ---
 
-# wiki-query — 위키에 질문하기
+# wiki-query — Ask the wiki a question
 
-## 0. 먼저 할 일
-1. `WIKI_SCHEMA.md`를 읽어 규칙(특히 인용·언어=한국어)을 확인.
-2. `wiki/index.md`를 읽어 어떤 페이지가 있는지 파악.
+## 0. Do this first
+1. Read `WIKI_SCHEMA.md` to confirm the rules (especially citations · language=English).
+2. Read `wiki/index.md` to see what pages exist.
 
-## 1. 검색
-- 질문과 관련된 페이지를 index에서 고르고, 해당 파일들을 읽는다.
-- alias·관련 링크를 따라 인접 페이지도 필요한 만큼 확장해서 읽는다.
-- 위키에 근거가 부족하면 `raw/`의 원본까지 내려가서 확인한다.
+## 1. Search
+- Pick pages relevant to the question from the index, and read those files.
+- Follow aliases · related links to expand into adjacent pages as needed.
+- If the wiki lacks sufficient grounding, drop down to the original `raw/` source to check.
 
-## 2. 답변 종합
-- 한국어로, **인용을 붙여** 답한다. 위키 페이지는 `[[페이지명]]`, 원본 근거는 `[[ep0X-...]]`로 표기.
-- 소스마다 입장이 다르면 그 차이를 드러낸다 (이 도메인은 프레임워크가 출처별로 다름).
-- 위키에 답이 없으면 "위키에 아직 없음"이라고 명확히 말하고, ingest를 제안한다.
+## 2. Synthesize the answer
+- Answer in English, **with citations**. Cite wiki pages as `[[page-name]]`, and original sources as `[[ep0X-...]]`.
+- If sources disagree, surface the difference (this domain has framework differences by source).
+- If the wiki has no answer, clearly say "not yet in the wiki" and suggest an ingest.
 
-## 3. 환류 (선택)
-- 답변이 위키에 남길 가치가 있으면(새로운 종합·연결), 어느 페이지에 무엇을 추가할지 제안하고 승인 시 반영한다.
-- 반영했거나 의미 있는 질의는 `wiki/log.md`에 `[QUERY]` 한 줄로 기록.
+## 3. Feed back (optional)
+- If the answer is worth keeping in the wiki (new synthesis · new connection), suggest what to add to which page, and apply it on approval.
+- Log any feedback applied, or any notably meaningful query, as a `[QUERY]` line in `wiki/log.md`.
 
-## 원칙
-- 위키에 없는 걸 지어내지 않는다. 출처 없는 단정 금지.
+## Principles
+- Never invent what isn't in the wiki. No unsourced assertions.

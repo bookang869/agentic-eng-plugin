@@ -43,7 +43,7 @@ RE_PATH_REF = re.compile(
     r"((?:\./|[A-Za-z0-9_]+/)[A-Za-z0-9_./-]+\.(?:py|ts|tsx|js|jsx|md|sql|json|yaml|yml|toml|html|css|sh|go|rs|java|kt|rb|php))"
 )
 RE_BASH_FENCE = re.compile(r"```(?:bash|sh|shell|zsh|console)\s*\n([\s\S]*?)```", re.IGNORECASE)
-RE_NON_OBVIOUS = re.compile(r"\b(Why:|Note:|Gotcha|Warning|Don't|Caveat|Important:|반드시|주의)", re.IGNORECASE)
+RE_NON_OBVIOUS = re.compile(r"\b(Why:|Note:|Gotcha|Warning|Don't|Caveat|Important:)", re.IGNORECASE)
 RE_REL_LINK = re.compile(r"\[[^\]]+\]\((?!https?://)([^)]+)\)")
 RE_DEPS_HEADING = re.compile(r"^#+\s.*(depend|cross[- ]module|imports?|see also|related)", re.IGNORECASE | re.MULTILINE)
 RE_PURPOSE_HEADING = re.compile(r"^#+\s.*(purpose|owns?|configures?|overview)", re.IGNORECASE | re.MULTILINE)
@@ -212,9 +212,9 @@ def score_a(modules: list[Module], root_claude: Path | None) -> CategoryScore:
     findings: list[str] = []
     if coverage < 1.0:
         gap_modules = [m.rel for m in modules if not m.has_context]
-        findings.append(f"context 미보유 핵심 module {len(gap_modules)}개: {', '.join(gap_modules[:6])}")
+        findings.append(f"{len(gap_modules)} core modules lack context: {', '.join(gap_modules[:6])}")
     if root_claude is None:
-        findings.append("root CLAUDE.md 부재 — 진입점 브리핑 없음")
+        findings.append("no root CLAUDE.md — no entry-point briefing")
 
     return CategoryScore(
         name="AI Navigation & Coverage",
@@ -237,7 +237,7 @@ def score_b(context_files: list[Path], repo: Path) -> CategoryScore:
     if not context_files:
         return CategoryScore(name="Context Document Quality", score=0, max=20,
                              evidence={"context_files": 0},
-                             findings=["context file 자체가 없음"])
+                             findings=["no context files exist"])
 
     n = len(context_files)
     sub: dict[str, int] = {}
@@ -278,17 +278,17 @@ def score_b(context_files: list[Path], repo: Path) -> CategoryScore:
     findings: list[str] = []
     if over_long:
         findings.append(
-            f"conciseness 초과(>100 lines) context {len(over_long)}건: "
+            f"{len(over_long)} context files exceed conciseness (>100 lines): "
             + ", ".join(f"{p.relative_to(repo)} ({ln})" for p, ln in over_long[:4])
         )
     if sub["B2_QuickCommands"] < 3:
-        findings.append("bash 코드블록이 부족 — quick command 보강 필요")
+        findings.append("too few bash code blocks — needs more quick commands")
     if sub["B3_KeyFiles"] < 3:
-        findings.append("핵심 파일 경로 인용 부족 — 3-5개 명시 권장")
+        findings.append("too few key file path references — recommend citing 3-5")
     if sub["B4_NonObvious"] < 3:
-        findings.append("Why/Note/Gotcha 같은 hidden rule 마커 부족")
+        findings.append("missing hidden-rule markers like Why/Note/Gotcha")
     if sub["B5_CrossRefs"] < 3:
-        findings.append("관련 module / context 간 cross-link 부족")
+        findings.append("insufficient cross-links between related modules / context")
 
     return CategoryScore(
         name="Context Document Quality",
@@ -355,11 +355,11 @@ def score_c(modules: list[Module], repo: Path) -> CategoryScore:
 
     findings: list[str] = []
     if not has_tribal_store:
-        findings.append("MEMORY.md / ADR / docs/decisions 부재 — tribal knowledge 외부화 store 없음")
+        findings.append("no MEMORY.md / ADR / docs/decisions — no tribal-knowledge externalization store")
     if q_pass[3] < n / 2:
-        findings.append("Cross-module dependencies 섹션이 절반 이상 module에서 누락")
+        findings.append("Cross-module dependencies section missing from more than half of modules")
     if q_pass[1] < n / 2:
-        findings.append("Common modification patterns 섹션 누락")
+        findings.append("Common modification patterns section missing")
 
     return CategoryScore(
         name="Tribal Knowledge Externalization",
@@ -408,11 +408,11 @@ def score_d(repo: Path, context_files: list[Path]) -> CategoryScore:
 
     findings: list[str] = []
     if not has_arch:
-        findings.append("ARCHITECTURE.md / dependency map 부재")
+        findings.append("no ARCHITECTURE.md / dependency map")
     if not has_mermaid:
-        findings.append("mermaid 다이어그램 없음 — 시각적 의존도 표현 부재")
+        findings.append("no mermaid diagrams — no visual dependency representation")
     if has_deps_section == 0:
-        findings.append("어떤 context file에도 cross-module dependency 섹션 없음")
+        findings.append("no context file has a cross-module dependency section")
 
     return CategoryScore(
         name="Cross-Module Dependency Mapping",
@@ -488,11 +488,11 @@ def score_e(repo: Path, context_files: list[Path]) -> CategoryScore:
     findings: list[str] = []
     if bad_refs:
         sample = ", ".join(f"{p.relative_to(repo)}: {ref}" for p, ref in bad_refs[:4])
-        findings.append(f"hallucinated path {len(bad_refs)}건 (총 {total_refs} 참조 중) — 예: {sample}")
+        findings.append(f"{len(bad_refs)} hallucinated paths (out of {total_refs} total references) — e.g. {sample}")
     if not has_codeowners and not has_pr_template:
-        findings.append("CODEOWNERS / PR template 없음 — independent critic infra 부재")
+        findings.append("no CODEOWNERS / PR template — no independent critic infra")
     if not has_evals:
-        findings.append("agent eval / prompt test 디렉터리 없음 — AI 회귀 catch 없음")
+        findings.append("no agent eval / prompt test directory — no AI regression catching")
 
     return CategoryScore(
         name="Verification & Quality Gates",
@@ -562,11 +562,11 @@ def score_f(modules: list[Module], repo: Path) -> CategoryScore:
 
     findings: list[str] = []
     if drifted:
-        findings.append(f"{drifted}/{measurable} module의 context가 코드 변경 후 30일 이상 미갱신")
+        findings.append(f"{drifted}/{measurable} modules' context not updated within 30 days of the code change")
     if not ctx_validation_workflow:
-        findings.append("CI에 context / docs validation step 없음")
+        findings.append("no context / docs validation step in CI")
     if not hook_validates_paths:
-        findings.append("pre-commit / pre-push hook에 path 검증 없음")
+        findings.append("no path validation in pre-commit / pre-push hooks")
 
     return CategoryScore(
         name="Freshness & Self-Maintenance",
@@ -608,9 +608,9 @@ def score_g(repo: Path) -> CategoryScore:
 
     findings: list[str] = []
     if not eval_dirs and not metric_files:
-        findings.append("agent eval / benchmark 디렉터리·결과 파일 부재 — 성능 측정 인프라 없음")
+        findings.append("no agent eval / benchmark directory or result files — no performance measurement infra")
     if not has_telemetry_hint:
-        findings.append("AI usage telemetry 단서 없음 (session log / OpenTelemetry)")
+        findings.append("no AI usage telemetry hints (session log / OpenTelemetry)")
 
     return CategoryScore(
         name="Agent Performance Outcomes",
@@ -664,10 +664,10 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
     missing = [m.rel for m in modules if not m.has_context]
     if missing:
         actions.append(Action(
-            title=f"{len(missing)}개 핵심 module에 CLAUDE.md 신설 ({', '.join(missing[:3])}{'…' if len(missing) > 3 else ''})",
+            title=f"Create CLAUDE.md for {len(missing)} core modules ({', '.join(missing[:3])}{'…' if len(missing) > 3 else ''})",
             category="A",
             effort="S", effort_hours=0.5 * len(missing),
-            impact=f"task당 ~3 min × ~5 task/일 절감 → 모듈 1개당 주 1-2 hr 회수",
+            impact=f"~3 min/task × ~5 tasks/day saved → recovers ~1-2 hr/week per module",
             impact_score=9,
             priority=9 / max(0.5, 0.5 * len(missing)),
         ))
@@ -675,10 +675,10 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
     # B — over-long context
     if B.evidence.get("max_lines", 0) > 100:
         actions.append(Action(
-            title="과도한 CLAUDE.md를 25-35 lines로 압축 (compass-not-encyclopedia)",
+            title="Compress oversized CLAUDE.md files to 25-35 lines (compass-not-encyclopedia)",
             category="B",
             effort="M", effort_hours=2.0,
-            impact="agent context 로드 시간 단축 + 핵심 정보 가시성 ↑",
+            impact="Shorter agent context load time + higher visibility of key info",
             impact_score=7,
             priority=7 / 2.0,
         ))
@@ -686,10 +686,10 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
     # C — no MEMORY/ADR
     if not C.evidence.get("memory_md") and not C.evidence.get("adr"):
         actions.append(Action(
-            title="MEMORY.md 또는 docs/adr/ 도입으로 tribal knowledge 외부화",
+            title="Introduce MEMORY.md or docs/adr/ to externalize tribal knowledge",
             category="C",
             effort="M", effort_hours=3.0,
-            impact="senior 의존 의사결정 외부화 → 신규 agent run 시 오류 ↓",
+            impact="Externalizes senior-dependent decisions → fewer errors on new agent runs",
             impact_score=8,
             priority=8 / 3.0,
         ))
@@ -697,10 +697,10 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
     # D — no architecture doc
     if not D.evidence.get("architecture_doc"):
         actions.append(Action(
-            title="ARCHITECTURE.md 또는 mermaid dependency 다이어그램 추가",
+            title="Add ARCHITECTURE.md or a mermaid dependency diagram",
             category="D",
             effort="M", effort_hours=2.5,
-            impact="cross-module ripple 추적 → 변경 영향 분석 시간 절반",
+            impact="Traces cross-module ripple → halves change-impact analysis time",
             impact_score=7,
             priority=7 / 2.5,
         ))
@@ -708,10 +708,10 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
     # E1 — broken refs
     if E.evidence.get("ref_broken", 0) > 0:
         actions.append(Action(
-            title=f"context의 hallucinated path {E.evidence['ref_broken']}건 수정 (referential trust)",
+            title=f"Fix {E.evidence['ref_broken']} hallucinated paths in context (referential trust)",
             category="E",
             effort="S", effort_hours=0.5,
-            impact="agent의 잘못된 path-following 방지 — stale = worse than missing",
+            impact="Prevents the agent from following bad paths — stale is worse than missing",
             impact_score=10,
             priority=10 / 0.5,
         ))
@@ -719,10 +719,10 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
     # E — no path validation in CI
     if not F.evidence.get("ctx_validation_workflow") and not F.evidence.get("hook_validates_paths"):
         actions.append(Action(
-            title="CI 또는 pre-push hook에 context path 검증 추가",
+            title="Add context path validation to CI or a pre-push hook",
             category="F",
             effort="S", effort_hours=1.0,
-            impact="stale reference를 코드 머지 시점에 차단 — 회귀 방지",
+            impact="Blocks stale references at merge time — prevents regressions",
             impact_score=8,
             priority=8 / 1.0,
         ))
@@ -732,10 +732,10 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
     if huge:
         sample = ", ".join(f"{p.relative_to(repo).as_posix()} ({ln})" for p, ln in huge[:3])
         actions.append(Action(
-            title=f"god file {len(huge)}개 분할 (>500 lines): {sample}",
+            title=f"Split {len(huge)} god files (>500 lines): {sample}",
             category="B",
             effort="L", effort_hours=2.5 * len(huge),
-            impact=f"파일당 ~5K-10K token 절감 + 편집 정확도 ↑",
+            impact=f"~5K-10K token reduction per file + higher edit accuracy",
             impact_score=6,
             priority=6 / max(2.5, 2.5 * len(huge)),
         ))
@@ -743,10 +743,10 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
     # G — no eval infra
     if G.score < 3:
         actions.append(Action(
-            title="evals/ 디렉터리 + 대표 task pass-rate 측정 도입",
+            title="Introduce an evals/ directory + representative task pass-rate measurement",
             category="G",
             effort="L", effort_hours=6.0,
-            impact="AI 회귀 측정 가능 — 개선 ROI 자체를 정량화",
+            impact="Enables measuring AI regressions — quantifies improvement ROI itself",
             impact_score=6,
             priority=6 / 6.0,
         ))
@@ -761,25 +761,25 @@ def derive_actions(report_partial: dict[str, CategoryScore], modules: list[Modul
 def generate_insights(cats: dict[str, CategoryScore], total: int) -> list[str]:
     out: list[str] = []
     grade, _ = grade_label(total)
-    out.append(f"총점 {total}/100 · 등급 {grade}")
+    out.append(f"Total score {total}/100 · Grade {grade}")
 
     # weakest categories
     norm = sorted(cats.items(), key=lambda kv: kv[1].score / kv[1].max)
     weakest = norm[:2]
     for k, c in weakest:
-        out.append(f"가장 낮은 카테고리: {k} {c.name} {c.score}/{c.max}")
+        out.append(f"Weakest category: {k} {c.name} {c.score}/{c.max}")
 
     # E1 hallucination is special
     e = cats.get("E")
     if e and e.evidence.get("ref_broken", 0) > 0:
         out.append(
-            f"⚠️  context에 hallucinated path {e.evidence['ref_broken']}건 — Meta 기준으로는 0이어야 함"
+            f"⚠️  {e.evidence['ref_broken']} hallucinated paths in context — Meta standard requires 0"
         )
 
     # F freshness
     f = cats.get("F")
     if f and f.evidence.get("drift_ratio", 0) > 0.3:
-        out.append(f"context drift 높음 ({f.evidence['drift_ratio']:.0%}) — stale 위험")
+        out.append(f"High context drift ({f.evidence['drift_ratio']:.0%}) — staleness risk")
 
     return out
 

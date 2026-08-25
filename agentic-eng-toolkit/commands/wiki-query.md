@@ -1,10 +1,10 @@
 ---
-description: 세컨드 브레인 위키에 질문하고 인용을 붙여 종합 답변한다 (가치 있으면 위키 환류 제안)
+description: Answers a question from the second-brain wiki with cited, synthesized answers (suggests feeding back into the wiki if valuable)
 ---
 
-Skill 도구로 이 플러그인에 번들된 **wiki-query** 스킬을 실행하세요.
-`WIKI_SCHEMA.md` 와 `wiki/index.md` 를 읽어 관련 페이지를 검색하고, 한국어로 인용(`[[페이지명]]`·`[[ep0X-...]]`)을 붙여 답합니다. 소스별 입장 차이는 드러내고, 위키에 없으면 "아직 없음"이라 말한 뒤 ingest 를 제안합니다.
+Run the **wiki-query** skill bundled with this plugin via the Skill tool.
+Read `WIKI_SCHEMA.md` and `wiki/index.md` to search for relevant pages, and answer with citations (`[[page-name]]` · `[[ep0X-...]]`). Surface differences in stance between sources, and if the answer isn't in the wiki, say "not yet in the wiki" and suggest an ingest.
 
-질의: $ARGUMENTS
+Query: $ARGUMENTS
 
-질의가 비어 있으면 사용자에게 무엇을 찾는지 먼저 확인합니다.
+If the query is empty, first ask the user what they're looking for.

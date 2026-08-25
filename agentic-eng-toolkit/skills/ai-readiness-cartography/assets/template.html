@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -586,50 +586,51 @@
       <!-- =========== HEADER =========== -->
       <header class="header">
         <div>
-          <div class="eyebrow">레포지토리 감사 · AI 준비도 · v2 루브릭</div>
-          <h1>GrowthNote — AI 준비도 지도</h1>
+          <div class="eyebrow">Repository Audit · AI Readiness · v2 Rubric</div>
+          <h1>GrowthNote — AI Readiness Map</h1>
           <div class="sub">
-            7개 카테고리 채점 · 구조 지도 · ROI 우선순위 액션
+            7-category scoring · structural map · ROI-prioritized actions
           </div>
         </div>
         <div class="header-meta">
-          <div>점수 측정 <strong>2026-04-28</strong></div>
-          <div>브랜치 <strong>feat/1-blog</strong></div>
-          <div>모듈 <strong>4</strong> · 컨텍스트 파일 <strong>8</strong></div>
+          <div>Scored <strong>2026-04-28</strong></div>
+          <div>Branch <strong>feat/1-blog</strong></div>
+          <div>Modules <strong>4</strong> · Context files <strong>8</strong></div>
         </div>
       </header>
 
       <!-- =========== SCORE STRIP =========== -->
       <section class="score-strip">
         <div class="score-hero">
-          <div class="label">AI 준비도 지수</div>
+          <div class="label">AI Readiness Index</div>
           <div class="value">
             <span class="num">32</span><span class="denom">/ 100</span>
           </div>
           <div class="grade-row">
             <span class="grade-badge" style="background: var(--red-soft); color: var(--red)">
-              <span class="grade-dot" style="background: var(--red)"></span> AI-Hostile · 에이전트 비친화
+              <span class="grade-dot" style="background: var(--red)"></span> AI-Hostile · agent-unfriendly
             </span>
           </div>
           <div class="desc">
-            7개 카테고리 · 가중치 차등 (A 15 · B 20 · C 20 · D 15 · E 15
-            · F 10 · G 5). 가장 약한 영역은 <strong>C 암묵지 외부화
-            (2/20)</strong> 와 <strong>D 의존성 매핑 (2/15)</strong>.
-            <strong>컨텍스트 파일에 존재하지 않는 경로 27건</strong>이
-            E1 검증 항목을 무너뜨리는 핵심 원인.
+            7 categories · weighted (A 15 · B 20 · C 20 · D 15 · E 15
+            · F 10 · G 5). Weakest areas are <strong>C Tribal Knowledge
+            Externalization (2/20)</strong> and <strong>D Dependency
+            Mapping (2/15)</strong>.
+            <strong>27 paths referenced in context files don't
+            exist</strong> — the main reason E1 verification collapses.
           </div>
           <hr />
           <div class="mini-stats">
             <div class="mini-stat">
-              <div class="k">컨텍스트 보유 모듈</div>
+              <div class="k">Modules with context</div>
               <div class="v">3 / 4</div>
             </div>
             <div class="mini-stat">
-              <div class="k">잘못된 경로</div>
+              <div class="k">Broken paths</div>
               <div class="v" style="color: var(--red)">27</div>
             </div>
             <div class="mini-stat">
-              <div class="k">300줄 초과 파일</div>
+              <div class="k">Files over 300 lines</div>
               <div class="v">20</div>
             </div>
           </div>
@@ -639,21 +640,21 @@
         <div class="rules">
           <div class="rules-head">
             <div>
-              <h2>7개 카테고리 — 카테고리별 점수</h2>
+              <h2>7 Categories — Score by Category</h2>
             </div>
             <div class="legend-inline">
-              <span><i style="background: var(--green)"></i> 75% 이상</span>
+              <span><i style="background: var(--green)"></i> 75%+</span>
               <span><i style="background: var(--amber)"></i> 50–74%</span>
-              <span><i style="background: var(--red)"></i> 50% 미만</span>
+              <span><i style="background: var(--red)"></i> Under 50%</span>
             </div>
           </div>
 
           <div class="rule-row">
             <div class="idx">A</div>
             <div>
-              <div class="title">AI 탐색 & 커버리지</div>
+              <div class="title">AI Navigation & Coverage</div>
               <div class="sub">
-                4개 핵심 모듈 중 3개에 컨텍스트 보유 · <code>scripts/</code> 미커버
+                3 of 4 core modules have context · <code>scripts/</code> uncovered
               </div>
             </div>
             <div class="bar bar-warn">
@@ -665,9 +666,9 @@
           <div class="rule-row">
             <div class="idx">B</div>
             <div>
-              <div class="title">컨텍스트 문서 품질</div>
+              <div class="title">Context Document Quality</div>
               <div class="sub">
-                길이 초과 1건 · 명령어 블록 · 주의사항 마커 부족
+                1 over-long file · lacking command blocks · lacking caveat markers
               </div>
             </div>
             <div class="bar bar-bad">
@@ -679,9 +680,9 @@
           <div class="rule-row">
             <div class="idx">C</div>
             <div>
-              <div class="title">암묵지 외부화</div>
+              <div class="title">Tribal Knowledge Externalization</div>
               <div class="sub">
-                MEMORY.md / ADR 부재 · Five-Question 통과 1/5
+                No MEMORY.md / ADR · Five-Question pass rate 1/5
               </div>
             </div>
             <div class="bar bar-bad">
@@ -693,9 +694,9 @@
           <div class="rule-row">
             <div class="idx">D</div>
             <div>
-              <div class="title">모듈 간 의존성 매핑</div>
+              <div class="title">Cross-Module Dependency Mapping</div>
               <div class="sub">
-                ARCHITECTURE.md · mermaid · 의존성 섹션 모두 부재
+                ARCHITECTURE.md · mermaid · dependency sections all missing
               </div>
             </div>
             <div class="bar bar-bad">
@@ -707,9 +708,9 @@
           <div class="rule-row">
             <div class="idx">E</div>
             <div>
-              <div class="title">검증 & 품질 게이트</div>
+              <div class="title">Verification & Quality Gates</div>
               <div class="sub">
-                <strong style="color: var(--red)">⚠ 잘못된 경로 27/31 참조</strong> · CODEOWNERS · evals 부재
+                <strong style="color: var(--red)">⚠ 27/31 references are broken paths</strong> · no CODEOWNERS · no evals
               </div>
             </div>
             <div class="bar bar-bad">
@@ -721,9 +722,9 @@
           <div class="rule-row">
             <div class="idx">F</div>
             <div>
-              <div class="title">신선도 & 자가 유지보수</div>
+              <div class="title">Freshness & Self-Maintenance</div>
               <div class="sub">
-                drift 0% · husky pre-push 존재 · CI 검증 단계 부재
+                0% drift · husky pre-push present · no CI validation step
               </div>
             </div>
             <div class="bar bar-good">
@@ -735,9 +736,9 @@
           <div class="rule-row">
             <div class="idx">G</div>
             <div>
-              <div class="title">에이전트 성과 측정</div>
+              <div class="title">Agent Performance Outcomes</div>
               <div class="sub">
-                evals/ · benchmarks/ 부재 · 측정 인프라 전무
+                No evals/ · benchmarks/ · no measurement infra at all
               </div>
             </div>
             <div class="bar bar-bad">
@@ -752,10 +753,10 @@
       <section class="map-section">
         <div class="map-head">
           <div>
-            <h2>구조 지도</h2>
+            <h2>Structural Map</h2>
             <div class="sub">
-              노드 = 디렉터리 · 엣지 = 의존성 · 카드 내부 수치는 해당
-              영역의 AI 준비도 지표
+              Node = directory · Edge = dependency · in-card numbers are
+              the AI-readiness metric for that area
             </div>
           </div>
           <div class="map-legend">
@@ -764,35 +765,35 @@
                 class="legend-dot"
                 style="background: var(--accent)"
               ></span>
-              CLAUDE.md 보유</span
+              Has CLAUDE.md</span
             >
             <span
               ><span
                 class="legend-dot"
                 style="background: var(--green)"
               ></span>
-              테스트</span
+              Tests</span
             >
             <span
               ><span
                 class="legend-square"
                 style="background: var(--red-soft); border: 1px solid var(--red)"
               ></span>
-              400줄 초과
+              Over 400 lines
             </span>
             <span>
               <span
                 class="legend-line"
                 style="border-color: var(--accent)"
               ></span>
-              타입 연결
+              Type link
             </span>
             <span>
               <span
                 class="legend-line"
                 style="border-color: var(--border-strong); border-style: dashed"
               ></span>
-              의존성
+              Dependency
             </span>
           </div>
         </div>
@@ -824,7 +825,7 @@
               class="node-meta"
               style="font-size: 11px; fill: var(--text-2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;"
             >
-              프런트엔드 · apps/web
+              Frontend · apps/web
             </text>
             <text
               x="590"
@@ -833,7 +834,7 @@
               class="node-meta"
               style="font-size: 11px; fill: var(--text-2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;"
             >
-              백엔드 · apps/api
+              Backend · apps/api
             </text>
             <text
               x="980"
@@ -842,7 +843,7 @@
               class="node-meta"
               style="font-size: 11px; fill: var(--text-2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;"
             >
-              데이터 · supabase
+              Data · supabase
             </text>
 
             <!-- ============ ROOT CLAUDE.md (top center) ============ -->
@@ -859,7 +860,7 @@
                 CLAUDE.md (root)
               </text>
               <text x="44" y="42" class="node-meta">
-                프로젝트 개요 · 아키텍처 · API 엔드포인트 맵
+                Project overview · architecture · API endpoint map
               </text>
               <text x="44" y="58" class="node-meta" style="fill: var(--text-2)">
                 60 lines
@@ -871,7 +872,7 @@
                 class="node-kpi"
                 style="fill: var(--accent)"
               >
-                루트
+                root
               </text>
             </g>
 
@@ -883,7 +884,7 @@
               <circle cx="22" cy="22" r="5" class="claude-dot" />
               <text x="42" y="26" class="node-title">apps/web/CLAUDE.md</text>
               <text x="42" y="42" class="node-meta">
-                디렉터리 규약 · 네이밍 · TanStack Query 패턴
+                Directory conventions · naming · TanStack Query patterns
               </text>
               <text x="264" y="26" text-anchor="end" class="node-kpi">
                 360 ln
@@ -972,7 +973,7 @@
                 apps/web/src/lib &amp; __tests__
               </text>
               <text x="42" y="42" class="node-meta">
-                코로케이션 테스트 ✓ · format · backend · notion · blog
+                Colocated tests ✓ · format · backend · notion · blog
               </text>
               <text x="264" y="26" text-anchor="end" class="node-kpi" style="fill: var(--green)">
                 5 suites
@@ -987,7 +988,7 @@
               <circle cx="22" cy="22" r="5" class="claude-dot" />
               <text x="42" y="26" class="node-title">apps/api/CLAUDE.md</text>
               <text x="42" y="42" class="node-meta">
-                파서 레이아웃 · Red/Blue Box · Template Method
+                Parser layout · Red/Blue Box · Template Method
               </text>
               <text x="264" y="26" text-anchor="end" class="node-kpi">
                 89 ln
@@ -1095,7 +1096,7 @@
               <circle cx="22" cy="22" r="5" class="claude-dot" />
               <text x="42" y="26" class="node-title">supabase/CLAUDE.md</text>
               <text x="42" y="42" class="node-meta">
-                스키마 규칙 · RLS · staleness 트리거
+                Schema rules · RLS · staleness triggers
               </text>
               <text x="264" y="26" text-anchor="end" class="node-kpi">
                 50 ln
@@ -1112,7 +1113,7 @@
               <g transform="translate(16,52)">
                 <rect fill="var(--grid)" width="248" height="18" rx="3" />
                 <text x="8" y="13" class="node-meta" style="fill: var(--text-2)">
-                  8 tables · 단일 RLS 패턴
+                  8 tables · single RLS pattern
                 </text>
               </g>
               <g transform="translate(16,74)">
@@ -1128,7 +1129,7 @@
               <rect class="node-card" width="280" height="110" rx="8" />
               <text x="16" y="24" class="node-title">docs/ · MEMORY.md</text>
               <text x="16" y="40" class="node-meta">
-                설계 문서 · 계산 로직 · 의사결정 "Why:"
+                Design docs · calculation logic · decision "Why:"
               </text>
               <g transform="translate(16,52)">
                 <rect fill="var(--accent-soft)" width="248" height="18" rx="3" />
@@ -1171,7 +1172,7 @@
               class="node-meta"
               style="fill: var(--accent); font-weight: 600"
             >
-              HTTP · JWT 인증
+              HTTP · JWT auth
             </text>
 
             <!-- Type sync warning: web/lib/types ↔ api/models/schemas -->
@@ -1201,7 +1202,7 @@
               class="node-meta"
               style="fill: var(--text-2)"
             >
-              DB 입출력
+              DB I/O
             </text>
 
             <!-- docs ← CLAUDE.md root -->
@@ -1217,49 +1218,49 @@
       <div class="findings">
         <section class="panel panel-strength">
           <div class="panel-head">
-            <h3>강점</h3>
-            <span class="count">유지할 것들</span>
+            <h3>Strengths</h3>
+            <span class="count">Keep doing these</span>
           </div>
           <ul class="panel-list">
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat A</span>
-                root + 3 module CLAUDE.md 체계
+                root + 3 module CLAUDE.md system
               </div>
               <div class="note">
-                root → web → api → supabase. 에이전트가 상위에서 하위로
-                드릴다운하며 필요한 만큼만 context 로드 가능.
+                root → web → api → supabase. Agents can drill down from
+                top to bottom, loading only as much context as needed.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat F</span>
-                Context drift 0% · husky pre-push 가동
+                Context drift 0% · husky pre-push active
               </div>
               <div class="note">
-                CLAUDE.md mtime 이 최근 코드 변경보다 신선함. pre-push
-                hook 으로 빌드 게이트 가동 중.
+                CLAUDE.md mtime is fresher than recent code changes. A
+                pre-push hook is running as a build gate.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat E3</span>
-                Build/test infra 완비
+                Build/test infra complete
               </div>
               <div class="note">
-                <code>turbo.json</code> + 각 앱의 <code>package.json</code>
-                / <code>pyproject.toml</code>. agent가 변경 후 검증
-                가능한 명령 즉시 실행 가능.
+                <code>turbo.json</code> + each app's <code>package.json</code>
+                / <code>pyproject.toml</code>. Agents can immediately run
+                verification commands after a change.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat A</span>
-                Monorepo 3-province 경계
+                Clean monorepo 3-way boundary
               </div>
               <div class="note">
-                apps/web · apps/api · supabase 가 명확히 분리되어 병렬
-                agent run 시 충돌 없음.
+                apps/web · apps/api · supabase are cleanly separated, so
+                parallel agent runs don't conflict.
               </div>
             </li>
           </ul>
@@ -1267,85 +1268,88 @@
 
         <section class="panel panel-risk">
           <div class="panel-head">
-            <h3>최우선 ROI 액션</h3>
-            <span class="count">우선순위 정렬</span>
+            <h3>Top ROI Actions</h3>
+            <span class="count">Priority order</span>
           </div>
           <ul class="panel-list">
             <li>
               <div class="head">
                 <span class="tag tag-rule" style="background: var(--red-soft); color: var(--red)">Cat E1 · S</span>
-                hallucinated path 27 / 31 ref 즉시 수정
+                Fix 27 / 31 hallucinated path references immediately
               </div>
               <div class="note">
                 <strong>Effort 0.5 hr · Impact 10/10.</strong>
-                <code>AGENTS.md</code> · 각 CLAUDE.md 의 잘못된 경로
-                (예: <code>src/middleware.ts</code> → 실제는
-                <code>apps/web/src/middleware.ts</code>) 를 정정. agent
-                의 가짜 path-following 즉시 차단.
+                Correct the broken paths in <code>AGENTS.md</code> and each
+                CLAUDE.md (e.g. <code>src/middleware.ts</code> should
+                actually be <code>apps/web/src/middleware.ts</code>).
+                Immediately blocks the agent from following fake paths.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat A · S</span>
-                <code>scripts/</code> module 에 CLAUDE.md 신설
+                Create a CLAUDE.md for the <code>scripts/</code> module
               </div>
               <div class="note">
                 <strong>Effort 0.5 hr · Impact 9/10.</strong>
-                navigation coverage 3/4 → 4/4. 신규 script 작성 시
-                agent가 패턴 복제 가능.
+                Navigation coverage 3/4 → 4/4. Lets agents replicate the
+                pattern when writing new scripts.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat F · S</span>
-                CI / pre-push hook 에 path validation 추가
+                Add path validation to CI / a pre-push hook
               </div>
               <div class="note">
                 <strong>Effort 1.0 hr · Impact 8/10.</strong>
-                stale reference 가 머지 시점에서 자동 차단. F1 향상 +
-                E1 회귀 방지 동시 달성.
+                Auto-blocks stale references at merge time. Improves F1
+                and prevents E1 regressions at the same time.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat C · M</span>
-                MEMORY.md / docs/adr/ 도입으로 tribal knowledge 외부화
+                Externalize tribal knowledge via MEMORY.md / docs/adr/
               </div>
               <div class="note">
                 <strong>Effort 3.0 hr · Impact 8/10.</strong>
-                Red/Blue Box 차이 · VAT 처리 · staleness 전략 등 의사결정
-                근거를 외부 store 에. 신규 agent run 시 오류 ↓.
+                Move decision rationale — Red/Blue Box differences · VAT
+                handling · staleness strategy — into an external store.
+                Fewer errors on new agent runs.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat D · M</span>
-                ARCHITECTURE.md + mermaid dependency 그림
+                ARCHITECTURE.md + mermaid dependency diagram
               </div>
               <div class="note">
                 <strong>Effort 2.5 hr · Impact 7/10.</strong>
-                cross-module ripple 시각화. 변경 영향 분석 시간 절반.
+                Visualizes cross-module ripple. Halves change-impact
+                analysis time.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat B · M</span>
-                <code>apps/web/CLAUDE.md</code> 압축 (360 → ~80 lines)
+                Compress <code>apps/web/CLAUDE.md</code> (360 → ~80 lines)
               </div>
               <div class="note">
                 <strong>Effort 2.0 hr · Impact 7/10.</strong>
-                "compass, not encyclopedia" 원칙. agent context 로드 시간
-                단축 + 핵심 정보 가시성 ↑.
+                "Compass, not encyclopedia" principle. Shorter agent
+                context load time + higher visibility of key info.
               </div>
             </li>
             <li>
               <div class="head">
                 <span class="tag tag-rule">Cat G · L</span>
-                <code>evals/</code> 디렉터리 + 대표 task pass-rate 측정
+                <code>evals/</code> directory + representative task pass-rate measurement
               </div>
               <div class="note">
                 <strong>Effort 6.0 hr · Impact 6/10.</strong>
-                개선 ROI 자체를 정량화. AI 회귀 측정 가능.
+                Quantifies improvement ROI itself. Enables measuring AI
+                regressions.
               </div>
             </li>
           </ul>
@@ -1353,7 +1357,7 @@
       </div>
 
       <footer>
-        GrowthNote · AI 준비도 감사 · v2 루브릭 (7 카테고리 / 100점) · 측정일 2026-04-28
+        GrowthNote · AI Readiness Audit · v2 Rubric (7 categories / 100 pts) · Scored 2026-04-28
       </footer>
     </div>
   </body>
