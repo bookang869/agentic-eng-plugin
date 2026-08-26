@@ -11,8 +11,10 @@ Ships a single plugin: **`agentic-eng-toolkit`**.
 | `/wiki-ingest` | Integrates raw sources into the second-brain wiki (entity extraction · merge · cross-linking · index/log updates) | "organize this into the wiki", "ingest ep0X", etc. |
 | `/wiki-lint` | Wiki health check (contradictions · orphan pages · broken links · index sync · abandoned stubs) | "check the wiki", "wiki lint", etc. |
 | `/wiki-query` | Ask the wiki a question → cited synthesized answer, suggests feeding back if valuable | "find it in the wiki", "what was...", etc. |
+| `/revise-claude-md` | Reviews the current session and proposes CLAUDE.md additions to capture learnings | run manually at end of session |
+| *(no command — skill only)* `claude-md-improver` | Audits all CLAUDE.md files in a repo against a quality rubric, reports scores, and applies approved fixes | "audit my CLAUDE.md files", "check if my CLAUDE.md is up to date", etc. |
 
-Each command runs the bundled skill of the same name. Invoke it explicitly with the slash command, or let it auto-trigger on the keywords above.
+Most commands run a bundled skill of the same name — invoke it explicitly with the slash command, or let it auto-trigger on the keywords above. `claude-md-improver` is skill-only (no matching slash command); `/revise-claude-md` is command-only (no matching auto-triggering skill).
 
 ## Installation (team members)
 
@@ -21,7 +23,7 @@ Each command runs the bundled skill of the same name. Invoke it explicitly with 
 /plugin install agentic-eng-toolkit@agentic-eng
 ```
 
-After installing, the 4 commands above will show up in `/help` or the `/` menu.
+After installing, the commands above will show up in `/help` or the `/` menu.
 
 ## Prerequisites
 
@@ -33,15 +35,29 @@ After installing, the 4 commands above will show up in `/help` or the `/` menu.
 ```
 agentic-eng-plugin/
 ├── .claude-plugin/marketplace.json     # marketplace manifest
+├── THIRD_PARTY_NOTICES.md              # attribution for imported (Apache-2.0) content
 └── agentic-eng-toolkit/                # the plugin
     ├── .claude-plugin/plugin.json
-    ├── commands/                       # 4 slash commands
-    └── skills/                         # 4 skills (auto-trigger + called by commands)
+    ├── commands/                       # slash commands
+    │   ├── ai-readiness-cartography.md
+    │   ├── wiki-ingest.md
+    │   ├── wiki-lint.md
+    │   ├── wiki-query.md
+    │   └── revise-claude-md.md
+    └── skills/                         # skills (auto-trigger + called by commands)
         ├── ai-readiness-cartography/   # SKILL.md + scripts/ + assets/ + references/
         ├── wiki-ingest/
         ├── wiki-lint/
-        └── wiki-query/
+        ├── wiki-query/
+        └── claude-md-improver/         # SKILL.md + references/ + LICENSE (Apache-2.0, adapted from anthropics/claude-plugins-official)
 ```
+
+## Third-party content
+
+`claude-md-improver` (skill) and `/revise-claude-md` (command) are adapted
+unmodified from Anthropic's official
+[`claude-md-management`](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management)
+plugin, licensed Apache-2.0. See `THIRD_PARTY_NOTICES.md`.
 
 ## Updating
 
