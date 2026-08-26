@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "An agentic engineering team toolkit that provides AI-Readiness auditing (/ai-readiness-cartography) and second-brain wiki workflows (/wiki-ingest, /wiki-lint, /wiki-query) as slash commands + auto-triggering skills.",
   "author": {
-    "name": "jha0313"
+    "name": "bookang869"
   },
   "keywords": [
     "ai-readiness",

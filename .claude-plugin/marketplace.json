@@ -3,7 +3,7 @@
   "name": "agentic-eng",
   "description": "Plugin marketplace for agentic engineering teams — ships second-brain wiki management (ingest/lint/query) and a repo AI-Readiness audit tool in one place.",
   "owner": {
-    "name": "jha0313"
+    "name": "bookang869"
   },
   "plugins": [
     {

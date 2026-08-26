@@ -17,7 +17,7 @@ Each command runs the bundled skill of the same name. Invoke it explicitly with 
 ## Installation (team members)
 
 ```
-/plugin marketplace add jha0313/agentic-eng-plugin
+/plugin marketplace add bookang869/agentic-eng-plugin
 /plugin install agentic-eng-toolkit@agentic-eng
 ```
 
