@@ -1,6 +1,6 @@
 {
   "name": "agentic-eng-toolkit",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An agentic engineering team toolkit that provides AI-Readiness auditing (/ai-readiness-cartography), second-brain wiki workflows (/wiki-ingest, /wiki-lint, /wiki-query), and CLAUDE.md maintenance (claude-md-improver skill, /revise-claude-md) as slash commands + auto-triggering skills.",
   "author": {
     "name": "bookang869"

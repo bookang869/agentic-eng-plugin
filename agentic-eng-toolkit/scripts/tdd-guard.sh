@@ -108,7 +108,12 @@ case "$FILE_PATH" in
     PARENT=$(dirname "$DIR")
     PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo ".")
     DIR_REAL=$(cd "$DIR" 2>/dev/null && pwd -P || echo "$DIR")
-    REL_DIR="${DIR_REAL#"$PROJECT_ROOT"/}"
+    if [ "$DIR_REAL" = "$PROJECT_ROOT" ]; then
+      REL_DIR=""
+    else
+      REL_DIR="${DIR_REAL#"$PROJECT_ROOT"/}"
+    fi
+    PARENT_NAME=$(basename "$DIR")
 
     TEST_FOUND=false
 
@@ -143,6 +148,25 @@ case "$FILE_PATH" in
       if [ -f "${PROJECT_ROOT}/tests/${REL_DIR}/test_${BASENAME}.py" ] || [ -f "${PROJECT_ROOT}/test/${REL_DIR}/test_${BASENAME}.py" ]; then
         TEST_FOUND=true
       fi
+    fi
+
+    # feature-area convention: tests/test_<parent-dir-name>.py covers every module in that dir
+    # (e.g. gateway/providers/openai_adapter.py <- tests/test_providers.py)
+    if [ "$TEST_FOUND" = false ] && [ -n "$PARENT_NAME" ] && [ "$PARENT_NAME" != "." ] && [ "$PARENT_NAME" != "/" ]; then
+      if [ -f "${PROJECT_ROOT}/tests/test_${PARENT_NAME}.py" ] || [ -f "${PROJECT_ROOT}/test/test_${PARENT_NAME}.py" ]; then
+        TEST_FOUND=true
+      fi
+    fi
+
+    # last resort: any test file that actually imports this module, regardless of naming
+    # (e.g. gateway/routes.py tested from tests/test_routing.py via `from gateway.routes import ...`)
+    if [ "$TEST_FOUND" = false ]; then
+      for TESTS_DIR in "${PROJECT_ROOT}/tests" "${PROJECT_ROOT}/test" "${DIR}/tests" "${DIR}/test"; do
+        if [ -d "$TESTS_DIR" ] && grep -rlE "^[[:space:]]*(from|import)[^#]*[^A-Za-z0-9_]${BASENAME}([^A-Za-z0-9_]|\$)" --include='*.py' "$TESTS_DIR" >/dev/null 2>&1; then
+          TEST_FOUND=true
+          break
+        fi
+      done
     fi
 
     if [ "$TEST_FOUND" = false ]; then
