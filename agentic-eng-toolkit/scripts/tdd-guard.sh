@@ -34,23 +34,36 @@ case "$FILE_PATH" in
     ;;
 esac
 
-# types/ folder doesn't need tests — allow
+# types/ folder and type-declaration files don't need tests — allow
+# (matched by basename/exact-segment, not "*/..." suffix, so root-level
+# files like a repo-root types.ts aren't missed — see migrations/ fix below
+# for why the "*/" form alone isn't enough)
+case "$BASENAME_ONLY" in
+  types.ts|*.d.ts)
+    exit 0
+    ;;
+esac
 case "$FILE_PATH" in
-  */types/*|*/types.ts|*/types.d.ts)
+  types/*|*/types/*)
     exit 0
     ;;
 esac
 
 # Next.js framework files are allowed (layout, page, loading, error, not-found, global styles)
-case "$FILE_PATH" in
-  */layout.tsx|*/layout.ts|*/page.tsx|*/page.ts|*/loading.tsx|*/error.tsx|*/not-found.tsx|*/globals.css)
+case "$BASENAME_ONLY" in
+  layout.tsx|layout.ts|page.tsx|page.ts|loading.tsx|error.tsx|not-found.tsx|globals.css)
     exit 0
     ;;
 esac
 
 # Python packaging/framework files don't need their own tests — allow
+case "$BASENAME_ONLY" in
+  __init__.py|setup.py|manage.py|wsgi.py|asgi.py)
+    exit 0
+    ;;
+esac
 case "$FILE_PATH" in
-  */__init__.py|*/setup.py|*/manage.py|*/wsgi.py|*/asgi.py|*/migrations/*|*/alembic/versions/*)
+  migrations/*|*/migrations/*|alembic/versions/*|*/alembic/versions/*)
     exit 0
     ;;
 esac
@@ -170,8 +183,11 @@ case "$FILE_PATH" in
     # last resort: any test file that actually imports this module, regardless of naming
     # (e.g. gateway/routes.py tested from tests/test_routing.py via `from gateway.routes import ...`)
     if [ "$TEST_FOUND" = false ]; then
-      for TESTS_DIR in "${PROJECT_ROOT}/tests" "${PROJECT_ROOT}/test" "${DIR}/tests" "${DIR}/test"; do
-        if [ -d "$TESTS_DIR" ] && grep -rlE "^[[:space:]]*(from|import)[^#]*[^A-Za-z0-9_]${BASENAME}([^A-Za-z0-9_]|\$)" --include='*.py' "$TESTS_DIR" >/dev/null 2>&1; then
+      # escape regex metacharacters so a basename like "my.module" or "weird+name"
+      # can't corrupt the pattern or match unrelated text
+      BASENAME_RE=$(printf '%s' "$BASENAME" | sed -e 's/[].[^$*+?(){}|\\]/\\&/g')
+      for TESTS_DIR in "${PROJECT_ROOT}/tests" "${PROJECT_ROOT}/test" "${DIR}/tests" "${DIR}/test" "${PARENT}/tests" "${PARENT}/test"; do
+        if [ -d "$TESTS_DIR" ] && grep -rlE "^[[:space:]]*(from|import)[^#]*[^A-Za-z0-9_]${BASENAME_RE}([^A-Za-z0-9_]|\$)" --include='*.py' "$TESTS_DIR" >/dev/null 2>&1; then
           TEST_FOUND=true
           break
         fi
