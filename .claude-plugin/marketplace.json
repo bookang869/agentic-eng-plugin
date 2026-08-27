@@ -10,7 +10,7 @@
       "name": "agentic-eng-toolkit",
       "source": "./agentic-eng-toolkit",
       "description": "Provides AI-Readiness auditing (/ai-readiness-cartography), second-brain wiki workflows (/wiki-ingest, /wiki-lint, /wiki-query), and CLAUDE.md maintenance (claude-md-improver skill, /revise-claude-md) as slash commands + auto-triggering skills.",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "keywords": [
         "ai-readiness",
         "second-brain",

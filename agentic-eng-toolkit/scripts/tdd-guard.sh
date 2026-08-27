@@ -11,9 +11,18 @@ if [ -z "$FILE_PATH" ]; then
   exit 0
 fi
 
-# Editing a test file itself is allowed
+# Editing a test file itself is allowed (matched by naming convention, not
+# a bare substring — "gateway/latest.py" or "contest_handler.py" must NOT match)
+BASENAME_ONLY=$(basename "$FILE_PATH")
+case "$BASENAME_ONLY" in
+  test_*.py|*_test.py|*.test.*|*.spec.*|conftest.py|tests.py|test.py)
+    exit 0
+    ;;
+esac
+
+# Files inside a dedicated test directory are allowed (exact path segment, not substring)
 case "$FILE_PATH" in
-  *test*|*spec*|*.test.*|*.spec.*|*__tests__*)
+  __tests__/*|*/__tests__/*|tests/*|*/tests/*|test/*|*/test/*|spec/*|*/spec/*|specs/*|*/specs/*)
     exit 0
     ;;
 esac
