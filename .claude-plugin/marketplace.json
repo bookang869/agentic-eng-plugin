@@ -9,7 +9,7 @@
     {
       "name": "agentic-eng-toolkit",
       "source": "./agentic-eng-toolkit",
-      "description": "Provides AI-Readiness auditing (/ai-readiness-cartography), second-brain wiki workflows (/wiki-ingest, /wiki-lint, /wiki-query), CLAUDE.md maintenance (claude-md-improver skill, /revise-claude-md), and a spec-driven phased execution harness (/harness, /harness-review) as slash commands + auto-triggering skills.",
+      "description": "Provides AI-Readiness auditing (/ai-readiness-cartography), second-brain wiki workflows (/wiki-ingest, /wiki-lint, /wiki-query), CLAUDE.md maintenance (claude-md-improver skill, /revise-claude-md), a spec-driven phased execution harness (/harness, /harness-review), and Claude Code session token/cost efficiency reporting (/improve-token-efficiency) as slash commands + auto-triggering skills.",
       "version": "0.3.0",
       "keywords": [
         "ai-readiness",
@@ -21,7 +21,9 @@
         "claude-md",
         "project-memory",
         "harness",
-        "spec-driven-development"
+        "spec-driven-development",
+        "token-efficiency",
+        "cost-analysis"
       ]
     }
   ]
