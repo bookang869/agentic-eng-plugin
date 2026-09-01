@@ -27,7 +27,12 @@ After installing, the commands above will show up in `/help` or the `/` menu.
 
 ## Prerequisites
 
-- **wiki-* commands**: must be run **inside a second-brain vault** that has `WIKI_SCHEMA.md` and a `wiki/` directory at the repo root. Schema, folder structure, and citation rules are all read from there.
+- **wiki-* commands**: must be run **inside a second-brain vault** — a separate repo you set up, not this plugin repo. None of the wiki skills create this structure for you; it must already exist at the target repo's root before `wiki-ingest`/`wiki-lint`/`wiki-query` will work correctly:
+  - `WIKI_SCHEMA.md` — defines folder layout, frontmatter fields, page template, naming, and citation rules. Every wiki skill reads this file first; **you have to author it yourself**, no starter template ships with this plugin.
+  - `wiki/index.md` — master listing of pages by category (kept in sync by `wiki-ingest`/`wiki-lint`).
+  - `wiki/log.md` — append-only log of ingest/lint/query actions.
+  - `wiki/concepts/`, `wiki/people/`, `wiki/tools/` (or whatever categories your schema defines) — the actual pages.
+  - `raw/` — the untouched source material (e.g. transcripts) that `wiki-ingest` reads from and never modifies.
 - **ai-readiness-cartography**: works on any repo. Requires `python3` (3.10+, stdlib only). The scoring script is `${CLAUDE_PLUGIN_ROOT}/skills/ai-readiness-cartography/scripts/score.py`.
 
 ## Structure
