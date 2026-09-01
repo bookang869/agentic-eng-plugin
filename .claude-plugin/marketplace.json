@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "agentic-eng",
-  "description": "Plugin marketplace for agentic engineering teams — ships second-brain wiki management (ingest/lint/query), a repo AI-Readiness audit tool, and CLAUDE.md maintenance tools in one place.",
+  "description": "Plugin marketplace for agentic engineering teams — ships second-brain wiki management (ingest/lint/query), a repo AI-Readiness audit tool, CLAUDE.md maintenance tools, and a spec-driven phased execution harness in one place.",
   "owner": {
     "name": "bookang869"
   },
@@ -9,8 +9,8 @@
     {
       "name": "agentic-eng-toolkit",
       "source": "./agentic-eng-toolkit",
-      "description": "Provides AI-Readiness auditing (/ai-readiness-cartography), second-brain wiki workflows (/wiki-ingest, /wiki-lint, /wiki-query), and CLAUDE.md maintenance (claude-md-improver skill, /revise-claude-md) as slash commands + auto-triggering skills.",
-      "version": "0.2.3",
+      "description": "Provides AI-Readiness auditing (/ai-readiness-cartography), second-brain wiki workflows (/wiki-ingest, /wiki-lint, /wiki-query), CLAUDE.md maintenance (claude-md-improver skill, /revise-claude-md), and a spec-driven phased execution harness (/harness, /harness-review) as slash commands + auto-triggering skills.",
+      "version": "0.3.0",
       "keywords": [
         "ai-readiness",
         "second-brain",
@@ -19,7 +19,9 @@
         "codebase-audit",
         "agentic-engineering",
         "claude-md",
-        "project-memory"
+        "project-memory",
+        "harness",
+        "spec-driven-development"
       ]
     }
   ]

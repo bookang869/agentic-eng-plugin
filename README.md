@@ -12,6 +12,8 @@ Ships a single plugin: **`agentic-eng-toolkit`**.
 | `/wiki-lint` | Wiki health check (contradictions · orphan pages · broken links · index sync · abandoned stubs) | "check the wiki", "wiki lint", etc. |
 | `/wiki-query` | Ask the wiki a question → cited synthesized answer, suggests feeding back if valuable | "find it in the wiki", "what was...", etc. |
 | `/revise-claude-md` | Reviews the current session and proposes CLAUDE.md additions to capture learnings | run manually at end of session |
+| `/harness` | Plans a feature as PRD/ARCHITECTURE/ADR-grounded steps, writes phases/step files, then drives a self-correcting sequential execution loop (retries, per-step commits) | "use the harness framework", "harness workflow", etc. |
+| `/harness-review` | Reviews the project's changes against its own CLAUDE.md CRITICAL rules, ARCHITECTURE.md, and ADR.md | "review this against the harness rules", etc. |
 | *(no command — skill only)* `claude-md-improver` | Audits all CLAUDE.md files in a repo against a quality rubric, reports scores, and applies approved fixes | "audit my CLAUDE.md files", "check if my CLAUDE.md is up to date", etc. |
 
 Most commands run a bundled skill of the same name — invoke it explicitly with the slash command, or let it auto-trigger on the keywords above. `claude-md-improver` is skill-only (no matching slash command); `/revise-claude-md` is command-only (no matching auto-triggering skill).
@@ -34,6 +36,7 @@ After installing, the commands above will show up in `/help` or the `/` menu.
   - `wiki/concepts/`, `wiki/people/`, `wiki/tools/` (or whatever categories your schema defines) — the actual pages.
   - `raw/` — the untouched source material (e.g. transcripts) that `wiki-ingest` reads from and never modifies.
 - **ai-readiness-cartography**: works on any repo. Requires `python3` (3.10+, stdlib only). The scoring script is `${CLAUDE_PLUGIN_ROOT}/skills/ai-readiness-cartography/scripts/score.py`.
+- **harness**: run inside the target project you want to plan/execute work in (not this plugin repo). It scaffolds `CLAUDE.md` / `docs/PRD.md` / `docs/ARCHITECTURE.md` / `docs/ADR.md` from `${CLAUDE_PLUGIN_ROOT}/skills/harness/assets/templates/` on first use if missing — fill in the placeholders before generating step files. Execution runs `python3 "${CLAUDE_PLUGIN_ROOT}/skills/harness/scripts/execute.py" <phase-dir>` from the project root and shells out to `claude -p`, so it requires `python3`, `git`, and the `claude` CLI on `PATH`.
 
 ## Structure
 
@@ -48,13 +51,16 @@ agentic-eng-plugin/
     │   ├── wiki-ingest.md
     │   ├── wiki-lint.md
     │   ├── wiki-query.md
-    │   └── revise-claude-md.md
+    │   ├── revise-claude-md.md
+    │   ├── harness.md
+    │   └── harness-review.md
     └── skills/                         # skills (auto-trigger + called by commands)
         ├── ai-readiness-cartography/   # SKILL.md + scripts/ + assets/ + references/
         ├── wiki-ingest/
         ├── wiki-lint/
         ├── wiki-query/
-        └── claude-md-improver/         # SKILL.md + references/ + LICENSE (Apache-2.0, adapted from anthropics/claude-plugins-official)
+        ├── claude-md-improver/         # SKILL.md + references/ + LICENSE (Apache-2.0, adapted from anthropics/claude-plugins-official)
+        └── harness/                    # SKILL.md + scripts/execute.py (+ tests) + assets/templates/
 ```
 
 ## Third-party content
