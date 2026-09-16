@@ -27,9 +27,19 @@ case "$FILE_PATH" in
     ;;
 esac
 
-# Config/type/style files don't need tests — allow
-case "$FILE_PATH" in
-  *.json|*.css|*.scss|*.md|*.yml|*.yaml|*.env*|*.config.*|*tailwind*|*postcss*|*next.config*|*tsconfig*|*.toml|*.cfg|*.ini|*.lock)
+# Config/style files don't need tests — allow (extension checks anchor at
+# the end of the basename, so they can't false-match a substring mid-name)
+case "$BASENAME_ONLY" in
+  *.json|*.css|*.scss|*.md|*.yml|*.yaml|*.toml|*.cfg|*.ini|*.lock)
+    exit 0
+    ;;
+esac
+
+# Named config/env files — matched by exact basename convention, not a bare
+# substring, so "src/tailwindMerge.ts" or "config.environment.js" (real
+# implementation files) don't get wrongly exempted
+case "$BASENAME_ONLY" in
+  .env|.env.*|tailwind.config.*|postcss.config.*|next.config.*|tsconfig.json|tsconfig.*.json|jsconfig.json)
     exit 0
     ;;
 esac
